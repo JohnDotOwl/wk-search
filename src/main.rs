@@ -34,9 +34,9 @@ async fn main() {
     }
 
     //Created Once then Cloned Later
-    let client = reqwest::Client::builder()
-    .timeout(Duration::from_secs(10))
-    .build();
+    // let client = reqwest::Client::builder()
+    // .timeout(Duration::from_secs(10))
+    // .build();
 
     // let client = Client::new();
 
@@ -47,15 +47,15 @@ async fn main() {
             // let client = client.clone();
 
             // Ram will shoot up to 150MB++ if you do clone and throw the builder outside of the map
-            let client = client.as_ref().expect("REASON").clone();
-            // let client = reqwest::Client::builder()
-            // .timeout(Duration::from_secs(10))
-            // .build();
+            // let client = client.as_ref().expect("REASON").clone();
+            let client = reqwest::Client::builder()
+            .timeout(Duration::from_secs(10))
+            .build();
 
             tokio::spawn(async move {
                 //wait with ? , why ah? 
-                // let resp = client.expect("Error").get(url).send().await?;
-                let resp = client.get(url).send().await?;
+                let resp = client.expect("Error").get(url).send().await?;
+                // let resp = client.get(url).send().await?;
                 resp.text().await
             })
         })
@@ -65,24 +65,24 @@ async fn main() {
     //Memory in Ram will just keep growing until about 290MB-300MB 
     bodies.for_each(|b| async {
             match b {
-                // Ok(Ok(b)) => {
-                //     // println!("{:?}", b.find("google.com, pub-"))
-                //     if b.find("google.com, pub-").is_some(){
-                //         //Scan all lines
-                //         let words: Vec<&str> = b.lines().collect();
-                //         for i in &words {
-                //             if i.find("google.com, pub-").is_some() && i.find("DIRECT").is_some(){
-                //                 println!("{}", i);
-                //                 break;
-                //             }
-                //         }
-                //         // println!("{:?}", words);
-                //     }else{
-                //         // No update on DB required.
-                //         // println!("No Ads.txt Data Found.");
-                //     }
-                // },
-                Ok(Ok(b)) => println!("Got {} bytes", b.len()),
+                Ok(Ok(b)) => {
+                    // println!("{:?}", b.find("google.com, pub-"))
+                    if b.find("google.com, pub-").is_some(){
+                        //Scan all lines
+                        let words: Vec<&str> = b.lines().collect();
+                        for i in &words {
+                            if i.find("google.com, pub-").is_some() && i.find("DIRECT").is_some(){
+                                println!("{}", i);
+                                break;
+                            }
+                        }
+                        // println!("{:?}", words);
+                    }else{
+                        // No update on DB required.
+                        println!("No Ads.txt Data Found.");
+                    }
+                },
+                // Ok(Ok(b)) => println!("Got {} bytes", b.len()),
                 Ok(Err(e)) => eprintln!("Got a reqwest::Error: {}", e),
                 Err(e) => eprintln!("Got a tokio::JoinError: {}", e),
             }

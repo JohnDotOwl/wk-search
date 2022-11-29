@@ -1,8 +1,12 @@
-#Project Description
+# Project Setup
+`cargo run build`
+`cargo run --release`
+
+# Project Description
 
 Ads.txt & App-ads.txt Search Engine & Management System. To manage ads.txt for big companies & provide a search interface for user to search all form of ads.txt.
 
-##Project Specification Plan
+## Project Specification Plan
 
 Schedule Data Collection (Milestone 1)
 
@@ -13,7 +17,7 @@ On Demand Data Collection (Milestone 2)
 - [ ]  Serverless (Redis Queue)
 
 
-##Supported Resources
+## Supported Resources
 
 - [x] ads.txt
 - [ ] app-ads.txt
